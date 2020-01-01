@@ -3,9 +3,12 @@ package bgu.spl.net.api;
 import bgu.spl.net.srv.Connections;
 
 public class StompMessagingProtocolImpl implements StompMessagingProtocol {
+    int connectionId;
+    Connections<String> connections;
     @Override
     public void start(int connectionId, Connections<String> connections) {
-        //TODO
+        this.connectionId = connectionId;
+        this.connections = connections;
     }
 
     @Override
