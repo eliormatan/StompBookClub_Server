@@ -19,5 +19,5 @@ public class StompMessagingProtocolImpl implements StompMessagingProtocol {
     @Override
     public boolean shouldTerminate() { //TODO
         return false;
-    }
+    } //TODO
 }
