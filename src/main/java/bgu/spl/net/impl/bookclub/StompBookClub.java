@@ -22,4 +22,16 @@ public class StompBookClub {
     public void exitGenreReadingClub(String genre){
 
     }
+
+    public void add(String genre, String book) {
+    }
+
+    public void borrow(String genre, String book) {
+    }
+
+    public void status(String genre) {
+    }
+
+    public void returning(String genre, String book) {
+    }
 }
