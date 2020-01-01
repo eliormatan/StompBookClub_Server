@@ -13,17 +13,13 @@ public class StompBookClub {
     public void login(String userName,String passWord){ //TODO: Return type and action
 
     }
+    public void logout(){
 
-    public void status(String genre) {//todo: return All the subscribed users and their inventory
     }
+    public void joinGenreReadingClub(String genre){
 
-    public void returning(String genre, String book) { //todo: return book name+book lender
     }
+    public void exitGenreReadingClub(String genre){
 
-    public void borrow(String genre, String book) { //todo: implement
     }
-
-    public void add(String genre, String book) {    //todo: add the book to the client inventory.
-    }
-
 }

@@ -7,6 +7,7 @@ import java.io.Serializable;
 public class LogoutCommand implements Command<StompBookClub> {
     @Override
     public Serializable execute(StompBookClub arg) { //todo
-        return null;
+        arg.logout();
+        return "OK";
     }
 }
