@@ -1,10 +1,10 @@
-package bgu.spl.net.impl.bookclub;
+package bgu.spl.net.impl.CommandsAndStomps;
 
-import bgu.spl.net.impl.rci.Command;
+import bgu.spl.net.impl.bookclub.StompBookClub;
 
 import java.io.Serializable;
 
-public class JoinGenreReadingClubCommand implements Command<StompBookClub> {
+public class JoinGenreReadingClubCommand implements StompFrames<StompBookClub> {
     private String genre;
     public JoinGenreReadingClubCommand(String genre){
         this.genre = genre;
@@ -14,4 +14,6 @@ public class JoinGenreReadingClubCommand implements Command<StompBookClub> {
         arg.joinGenreReadingClub(genre);
         return "OK";
     }
+
+
 }

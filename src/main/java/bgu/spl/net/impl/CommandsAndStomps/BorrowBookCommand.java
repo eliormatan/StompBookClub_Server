@@ -1,10 +1,9 @@
-package bgu.spl.net.impl.bookclub;
-
-import bgu.spl.net.impl.rci.Command;
+package bgu.spl.net.impl.CommandsAndStomps;
+import bgu.spl.net.impl.bookclub.StompBookClub;
 
 import java.io.Serializable;
 
-public class BorrowBookCommand implements Command<StompBookClub> {
+public class BorrowBookCommand implements StompFrames<StompBookClub> {
     String genre;
     String book;
 
@@ -15,7 +14,7 @@ public class BorrowBookCommand implements Command<StompBookClub> {
 
     @Override
     public Serializable execute(StompBookClub arg) {//todo
-        arg.borrow(genre,book);
+        arg.borrowBook(genre,book);
         return null;
     }
 }

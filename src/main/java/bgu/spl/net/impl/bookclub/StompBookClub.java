@@ -23,10 +23,11 @@ public class StompBookClub {
 
     }
 
-    public void add(String genre, String book) {
+    public void addBook(String genre, String book) {
     }
 
-    public void borrow(String genre, String book) {
+    public void borrowBook(String genre, String book) {
+
     }
 
     public void status(String genre) {

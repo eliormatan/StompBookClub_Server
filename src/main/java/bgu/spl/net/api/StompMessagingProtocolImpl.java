@@ -13,7 +13,34 @@ public class StompMessagingProtocolImpl implements StompMessagingProtocol {
 
     @Override
     public void process(String message) {
-        //TODO
+//        String[] result = message.split(System.lineSeparator(), 2);
+//        String actionTodo = result[0];
+////        switch(actionTodo){
+////            case "SEND":
+////            {
+////
+////            }
+////            case "SUBSCRIBE":
+////            {
+////
+////            }
+////            case "UNSUBSCRIBE":
+////            {
+////
+////            }
+////            case "DISCONNECT":
+////            {
+////
+////            }
+////            case "CONNECT":
+////            {
+////
+////            }
+////            case "MESSAGE":
+////            {
+////
+////            }
+//        }
     }
 
     @Override
