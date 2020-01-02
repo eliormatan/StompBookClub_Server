@@ -1,4 +1,10 @@
 package bgu.spl.net.impl.CommandsAndStomps;
 
-public class ErrorFrame {
+import java.io.Serializable;
+
+public class ErrorFrame implements StompFrames{
+    @Override
+    public Serializable execute(Object arg) {
+        return null;
+    }
 }
