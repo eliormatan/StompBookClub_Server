@@ -6,7 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class ConnectionsImpl<T> implements Connections<T> {
     private ConcurrentHashMap<Integer,ConnectionHandler<T>> connectionHashMap;
-    private ConcurrentHashMap<Integer, List<String>> channelsHashMap;   //todo: where to implement the list?
+    private ConcurrentHashMap<Integer, List<String>> channelsHashMap; //which geners the id joined for
+    //todo: where to implement the list?
 
     public ConnectionsImpl(){
         connectionHashMap= new ConcurrentHashMap<>();
