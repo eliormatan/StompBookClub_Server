@@ -1,5 +1,6 @@
 package bgu.spl.net.impl.bookclub;
 
+import bgu.spl.net.impl.CommandsAndStomps.StompFrames;
 import bgu.spl.net.impl.rci.RCIClient;
 import javafx.util.Pair;
 
@@ -16,29 +17,35 @@ public class StompBookClub {
         listOfUsers = new ConcurrentHashMap<>();
     }
     public static StompBookClub getInstance(){ return bookClubInstance; }
-    public void login(String userName,String passWord){ //TODO: Return type and action
+    public StompFrames login(String userName,String passWord){ //TODO: Return type and action
+        return null;
 
     }
-    public void logout(int recipt){
+    public StompFrames logout(int recipt){
+        return null;
+    }
+    public StompFrames joinGenreReadingClub(String genre){
+        return null;
 
     }
-    public void joinGenreReadingClub(String genre){
-
-    }
-    public void exitGenreReadingClub(int unsubscribeID){
-
-    }
-
-    public void addBook(String genre, String book) {
-    }
-
-    public void borrowBook(String genre, String book) {
+    public StompFrames exitGenreReadingClub(int unsubscribeID){
+        return null;
 
     }
 
-    public void status(String genre) {
+    public StompFrames addBook(String genre, String book) {
+        return null;
     }
 
-    public void returning(String genre, String book) {
+    public StompFrames borrowBook(String genre, String book) {
+        return null;
+    }
+
+    public StompFrames status(String genre) {
+        return null;
+    }
+
+    public StompFrames returning(String genre, String book) {
+        return null;
     }
 }

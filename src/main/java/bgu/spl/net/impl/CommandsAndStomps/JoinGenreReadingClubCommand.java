@@ -14,8 +14,8 @@ public class JoinGenreReadingClubCommand implements StompFrames<StompBookClub> {
         this.subscribeID = subscribeID;
     }
     @Override
-    public void execute(StompBookClub arg) { //:todo
-        arg.joinGenreReadingClub(genre);
+    public StompFrames run(StompBookClub arg) { //:todo
+        return arg.joinGenreReadingClub(genre);
     }
 
 

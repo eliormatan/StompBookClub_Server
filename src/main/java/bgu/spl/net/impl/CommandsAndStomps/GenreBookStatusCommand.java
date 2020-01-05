@@ -12,7 +12,7 @@ public class GenreBookStatusCommand implements StompFrames<StompBookClub> {
     }
 
     @Override
-    public void execute(StompBookClub arg) { //todo
-        arg.status(genre);
+    public StompFrames run(StompBookClub arg) { //todo
+        return arg.status(genre);
     }
 }

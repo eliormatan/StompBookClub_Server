@@ -1,8 +1,10 @@
 package bgu.spl.net.impl.CommandsAndStomps;
 
-public class ReciptFrame implements StompFrames {
-    @Override
-    public void execute(Object arg) {
+import bgu.spl.net.impl.bookclub.StompBookClub;
 
+public class ReciptFrame implements StompFrames<StompBookClub> {
+    @Override
+    public StompFrames run(StompBookClub arg) {
+        return null;
     }
 }

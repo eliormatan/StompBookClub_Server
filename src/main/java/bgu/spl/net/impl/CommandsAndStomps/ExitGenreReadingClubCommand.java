@@ -10,8 +10,8 @@ public class ExitGenreReadingClubCommand implements StompFrames<StompBookClub> {
         this.unsubscribeID = unsubscribeID;
     }
     @Override
-    public void execute(StompBookClub arg) { //todo
-        arg.exitGenreReadingClub(unsubscribeID);
+    public StompFrames run(StompBookClub arg) { //todo
+        return arg.exitGenreReadingClub(unsubscribeID);
     }
 
 }

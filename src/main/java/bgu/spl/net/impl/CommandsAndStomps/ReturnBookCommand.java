@@ -4,7 +4,8 @@ import bgu.spl.net.impl.bookclub.StompBookClub;
 
 import java.io.Serializable;
 
-public class ReturnBookCommand implements StompFrames<StompBookClub> {
+public class ReturnBookCommand implements StompFrames {
+
     String genre;
     String book;
 
@@ -14,7 +15,7 @@ public class ReturnBookCommand implements StompFrames<StompBookClub> {
     }
 
     @Override
-    public Serializable execute(StompBookClub arg) { //todo
+    public StompFrames run(StompBookClub arg) { //todo
         arg.returning(genre,book);
         return null;
     }

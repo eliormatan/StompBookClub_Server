@@ -1,8 +1,11 @@
 package bgu.spl.net.impl.CommandsAndStomps;
 
-public class MessageFrame implements StompFrame {
+import bgu.spl.net.impl.bookclub.StompBookClub;
+
+public class MessageFrame implements StompFrames<StompBookClub> {
+
     @Override
-    public String getStompBody() {
+    public StompFrames run(StompBookClub arg) {
         return null;
     }
 }

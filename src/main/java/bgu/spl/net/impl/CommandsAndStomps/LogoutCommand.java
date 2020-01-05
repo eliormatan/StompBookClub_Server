@@ -11,8 +11,8 @@ public class LogoutCommand implements StompFrames<StompBookClub> {
         this.recipt = recipt;
     }
     @Override
-    public void execute(StompBookClub arg) { //todo
-        arg.logout(recipt);
+    public StompFrames run(StompBookClub arg) { //todo
+        return arg.logout(recipt);
     }
 
 }

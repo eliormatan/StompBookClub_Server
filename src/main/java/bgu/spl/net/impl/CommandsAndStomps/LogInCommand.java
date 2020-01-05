@@ -12,8 +12,8 @@ public class LogInCommand implements StompFrames<StompBookClub> {
         this.passWord = passWord;
     }
     @Override
-    public void execute(StompBookClub arg) {
-        arg.login(userName,passWord);
+    public StompFrames run(StompBookClub arg) {
+        return arg.login(userName,passWord);
     }
 
 }

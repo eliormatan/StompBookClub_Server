@@ -13,7 +13,7 @@ public class BorrowBookCommand implements StompFrames<StompBookClub> {
     }
 
     @Override
-    public void execute(StompBookClub arg) {//todo
-        arg.borrowBook(genre,book);
+    public StompFrames run(StompBookClub arg) {//todo
+        return arg.borrowBook(genre,book);
     }
 }
