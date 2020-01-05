@@ -11,11 +11,6 @@ public class GenreBookStatusCommand extends BaseStompFrame {
         this.genre = genre;
     }
 
-//    @Override
-//    public StompFrames run(StompBookClub arg) { //todo
-//        return arg.status(genre);
-//    }
-
     @Override
     public StompFrames run() {
         return null;

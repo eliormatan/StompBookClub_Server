@@ -5,20 +5,14 @@ import bgu.spl.net.impl.bookclub.StompBookClub;
 import java.io.Serializable;
 
 public class ReturnBookCommand extends BaseStompFrame {
-
-    String genre;
-    String book;
+    private String genre;
+    private String book;
 
     public ReturnBookCommand(String genre,String book) {
+        super();
         this.genre = genre;
         this.book=book;
     }
-
-//    @Override
-//    public StompFrames run(StompBookClub arg) { //todo
-//        arg.returning(genre,book);
-//        return null;
-//    }
 
     @Override
     public StompFrames run() {

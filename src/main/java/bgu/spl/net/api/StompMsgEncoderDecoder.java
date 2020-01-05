@@ -21,9 +21,8 @@ public class StompMsgEncoderDecoder implements MessageEncoderDecoder<String> {
     }
 
     @Override
-    public byte[] encode(String frame) {
-        String encodedCommand = new String();
-        return (encodedCommand + "\n" + "\u0000").getBytes(); //uses utf8 by default
+    public byte[] encode(String frame) { //TODO
+        return (frame + "\n" + "\u0000").getBytes(); //uses utf8 by default
     }
 
     private void pushByte(byte nextByte) {
