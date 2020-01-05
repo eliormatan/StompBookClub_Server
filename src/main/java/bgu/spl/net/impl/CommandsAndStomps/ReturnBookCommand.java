@@ -1,10 +1,10 @@
-package bgu.spl.net.impl.bookclub;
+package bgu.spl.net.impl.CommandsAndStomps;
 
-import bgu.spl.net.impl.rci.Command;
+import bgu.spl.net.impl.bookclub.StompBookClub;
 
 import java.io.Serializable;
 
-public class ReturnBookCommand implements Command<StompBookClub> {
+public class ReturnBookCommand implements StompFrames<StompBookClub> {
     String genre;
     String book;
 
@@ -18,4 +18,5 @@ public class ReturnBookCommand implements Command<StompBookClub> {
         arg.returning(genre,book);
         return null;
     }
+
 }
