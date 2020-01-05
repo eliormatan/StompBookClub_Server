@@ -29,7 +29,8 @@ public class StompMessagingProtocolImpl implements StompMessagingProtocol {
                 String[] remainingRowSeperator = firstRowSeperator[1].split("\n",5);
                 String userName = remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":")+1);
                 String passWord = remainingRowSeperator[3].substring(remainingRowSeperator[3].indexOf(":")+1);
-                StompFrames loginCommand = new LogInCommand(userName,passWord);
+                StompFrames loginCommand = new LogInCommand(userName,passWord,connectionId);
+                StompFrames response = loginCommand.run();
             }
             case "DISCONNECT": {
                 String[] remainingRowSeperator = firstRowSeperator[1].split("\n",2);
@@ -57,7 +58,6 @@ public class StompMessagingProtocolImpl implements StompMessagingProtocol {
             }
 
         }
-
 
     }
 

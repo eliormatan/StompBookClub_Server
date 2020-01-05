@@ -4,7 +4,7 @@ import bgu.spl.net.impl.bookclub.StompBookClub;
 
 import java.io.Serializable;
 
-public class ErrorFrame implements StompFrames<StompBookClub>{
+public class ErrorFrame extends BaseStompFrame{
     @Override
     public StompFrames run() {
         //TODO

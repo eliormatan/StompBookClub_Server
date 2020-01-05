@@ -4,7 +4,7 @@ import bgu.spl.net.impl.bookclub.StompBookClub;
 
 import java.io.Serializable;
 
-public class JoinGenreReadingClubCommand implements StompFrames<StompBookClub> {
+public class JoinGenreReadingClubCommand extends BaseStompFrame {
     private String genre;
     private int reciptID;
     private int subscribeID;
@@ -14,9 +14,7 @@ public class JoinGenreReadingClubCommand implements StompFrames<StompBookClub> {
         this.subscribeID = subscribeID;
     }
     @Override
-    public StompFrames run(StompBookClub arg) { //:todo
-        return arg.joinGenreReadingClub(genre);
+    public StompFrames run() {
+        return null;
     }
-
-
 }

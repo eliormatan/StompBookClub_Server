@@ -4,7 +4,7 @@ import bgu.spl.net.impl.bookclub.StompBookClub;
 
 import java.io.Serializable;
 
-public class AddBookCommand implements StompFrames<StompBookClub> {
+public class AddBookCommand implements StompFrames {
     String genre;
     String book;
     public AddBookCommand(String genre,String book) {
@@ -12,8 +12,7 @@ public class AddBookCommand implements StompFrames<StompBookClub> {
         this.book=book;
     }
     @Override
-    public StompFrames run(StompBookClub arg) { //todo
-        return arg.addBook(genre,book);
+    public StompFrames run() {
+        return null;
     }
-
 }
