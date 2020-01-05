@@ -3,8 +3,14 @@ package bgu.spl.net.api;
 import bgu.spl.net.srv.Connections;
 
 public class StompMessagingProtocolImpl implements StompMessagingProtocol {
-    int connectionId;
-    Connections<String> connections;
+    private int connectionId;
+    private Connections<String> connections;
+    private boolean shouldTerminate;
+
+    public StompMessagingProtocolImpl(){
+        this.shouldTerminate=false;
+    }
+
     @Override
     public void start(int connectionId, Connections<String> connections) {
         this.connectionId = connectionId;
@@ -12,12 +18,12 @@ public class StompMessagingProtocolImpl implements StompMessagingProtocol {
     }
 
     @Override
-    public void process(String message) {
-        //TODO
+    public void process(String message) { //TODO
+
     }
 
     @Override
-    public boolean shouldTerminate() { //TODO
-        return false;
-    } //TODO
+    public boolean shouldTerminate() {
+        return shouldTerminate;
+    }
 }

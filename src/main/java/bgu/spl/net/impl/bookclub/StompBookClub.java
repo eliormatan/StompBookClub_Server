@@ -10,6 +10,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
 public class StompBookClub {
     ConcurrentHashMap<String, ConcurrentLinkedQueue<Pair<String, CopyOnWriteArrayList<String>>>> registerdToGenreMap;
     ConcurrentHashMap<String,Pair<String,Boolean>> listOfUsers;
+
+
     public void login(String userName,String passWord){ //TODO: Return type and action
 
     }
@@ -33,5 +35,6 @@ public class StompBookClub {
     }
 
     public void returning(String genre, String book) {
+
     }
 }
