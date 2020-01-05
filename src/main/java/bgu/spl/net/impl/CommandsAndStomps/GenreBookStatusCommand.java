@@ -12,8 +12,7 @@ public class GenreBookStatusCommand implements StompFrames<StompBookClub> {
     }
 
     @Override
-    public Serializable execute(StompBookClub arg) { //todo
+    public void execute(StompBookClub arg) { //todo
         arg.status(genre);
-        return null;
     }
 }

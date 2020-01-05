@@ -12,9 +12,8 @@ public class LogInCommand implements StompFrames<StompBookClub> {
         this.passWord = passWord;
     }
     @Override
-    public Serializable execute(StompBookClub arg) {
+    public void execute(StompBookClub arg) {
         arg.login(userName,passWord);
-        return "OK"; //TODO: Know what is Serializable
     }
 
 }

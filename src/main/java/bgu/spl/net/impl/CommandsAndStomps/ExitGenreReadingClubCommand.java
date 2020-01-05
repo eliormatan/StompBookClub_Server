@@ -5,14 +5,13 @@ import bgu.spl.net.impl.bookclub.StompBookClub;
 import java.io.Serializable;
 
 public class ExitGenreReadingClubCommand implements StompFrames<StompBookClub> {
-    private String genre;
-    public ExitGenreReadingClubCommand(String genre){
-        this.genre = genre;
+    private int unsubscribeID;
+    public ExitGenreReadingClubCommand(int unsubscribeID){
+        this.unsubscribeID = unsubscribeID;
     }
     @Override
-    public Serializable execute(StompBookClub arg) { //todo
-        arg.exitGenreReadingClub(genre);
-        return "OK";
+    public void execute(StompBookClub arg) { //todo
+        arg.exitGenreReadingClub(unsubscribeID);
     }
 
 }

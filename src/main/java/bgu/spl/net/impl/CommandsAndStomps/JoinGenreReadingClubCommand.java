@@ -6,13 +6,16 @@ import java.io.Serializable;
 
 public class JoinGenreReadingClubCommand implements StompFrames<StompBookClub> {
     private String genre;
-    public JoinGenreReadingClubCommand(String genre){
+    private int reciptID;
+    private int subscribeID;
+    public JoinGenreReadingClubCommand(String genre,int subscribeID,int reciptID){
         this.genre = genre;
+        this.reciptID = reciptID;
+        this.subscribeID = subscribeID;
     }
     @Override
-    public Serializable execute(StompBookClub arg) { //:todo
+    public void execute(StompBookClub arg) { //:todo
         arg.joinGenreReadingClub(genre);
-        return "OK";
     }
 
 

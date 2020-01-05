@@ -1,6 +1,7 @@
 package bgu.spl.net.api;
 
-import bgu.spl.net.impl.CommandsAndStomps.StompFrames;
+import bgu.spl.net.impl.CommandsAndStomps.*;
+import bgu.spl.net.impl.bookclub.StompBookClub;
 import bgu.spl.net.impl.rci.Command;
 
 import java.nio.charset.StandardCharsets;
@@ -11,8 +12,6 @@ public class StompMsgEncoderDecoder implements MessageEncoderDecoder<StompFrames
     private int len = 0;
     @Override
     public StompFrames decodeNextByte(byte nextByte) {
-        //notice that the top 128 ascii characters have the same representation as their utf-8 counterparts
-        //this allow us to do the following comparison
         if (nextByte == '\u0000') {
             return msgParser();
         }
@@ -39,53 +38,42 @@ public class StompMsgEncoderDecoder implements MessageEncoderDecoder<StompFrames
         String[] firstRowSeperator = result.split("\n", 2);
         switch(firstRowSeperator[0]){
             case "CONNECT":{
-
+                String[] remainingRowSeperator = firstRowSeperator[1].split("\n",5);
+                String userName = remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":")+1);
+                String passWord = remainingRowSeperator[3].substring(remainingRowSeperator[3].indexOf(":")+1);
+                StompFrames loginCommand = new LogInCommand(userName,passWord);
+                return loginCommand;
             }
             case "DISCONNECT": {
-
+                String[] remainingRowSeperator = firstRowSeperator[1].split("\n",2);
+                int reciptID = Integer.parseInt(remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":")+1));
+                LogoutCommand logoutCommand = new LogoutCommand(reciptID);
+                return logoutCommand;
             }
             case "SUBSCRIBE": {
-
+                String[] remainingRowSeperator = firstRowSeperator[1].split("\n",4);
+                String whoToJoin = remainingRowSeperator[0];
+                int subscribeID = Integer.parseInt(remainingRowSeperator[1].substring(remainingRowSeperator[1].indexOf(":")+1));
+                int reciptID = Integer.parseInt(remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":")+1));
+                JoinGenreReadingClubCommand subscribe = new JoinGenreReadingClubCommand(whoToJoin,subscribeID,reciptID);
+                return subscribe;
             }
             case "UNSUBSCRIBE": {
+                String[] remainingRowSeperator = firstRowSeperator[1].split("\n",2);
+                int unsubscribeID = Integer.parseInt(remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":")+1));
+                ExitGenreReadingClubCommand unsubscribe = new ExitGenreReadingClubCommand(unsubscribeID);
+                return unsubscribe;
 
             }
             case "SEND":{
-
+                String[] remainingRowSeperator = firstRowSeperator[1].split("\n",3);
+                String destenation = remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":")+1);
+                //TODO
             }
 
         }
         return null; //TODO
 
     }
-
-//    private StompFrames popCommandType() {
-//        //notice that we explicitly requesting that the string will be decoded from UTF-8
-//        //this is not actually required as it is the default encoding in java.
-//        String result = new String(bytes, 0, len, StandardCharsets.UTF_8);
-//        switch(result){
-//            case "SEND":
-//            {
-//
-//            }
-//            case "SUBSCRIBE":
-//            {
-//
-//            }
-//            case "UNSUBSCRIBE":
-//            {
-//
-//            }
-//            case "DISCONNECT":
-//            {
-//
-//            }
-//            case "CONNECT":
-//            {
-//
-//            }
-//        len = 0;
-//        return null;
-//    }
 
 }

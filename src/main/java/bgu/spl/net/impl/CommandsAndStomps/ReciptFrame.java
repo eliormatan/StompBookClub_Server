@@ -1,8 +1,8 @@
 package bgu.spl.net.impl.CommandsAndStomps;
 
-public class ReciptFrame {
+public class ReciptFrame implements StompFrames {
     @Override
-    public String getStompBody() {
-        return null;
+    public void execute(Object arg) {
+
     }
 }

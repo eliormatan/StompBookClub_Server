@@ -8,18 +8,24 @@ import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StompBookClub {
-    ConcurrentHashMap<String, ConcurrentLinkedQueue<Pair<String, CopyOnWriteArrayList<String>>>> registerdToGenreMap;
-    ConcurrentHashMap<String,Pair<String,Boolean>> listOfUsers;
+    private static StompBookClub bookClubInstance = new StompBookClub();
+    private ConcurrentHashMap<String, ConcurrentLinkedQueue<Pair<String, CopyOnWriteArrayList<String>>>> registerdToGenreMap;
+    private ConcurrentHashMap<String,Pair<String,Boolean>> listOfUsers;
+    private StompBookClub(){
+        registerdToGenreMap = new ConcurrentHashMap<>();
+        listOfUsers = new ConcurrentHashMap<>();
+    }
+    public static StompBookClub getInstance(){ return bookClubInstance; }
     public void login(String userName,String passWord){ //TODO: Return type and action
 
     }
-    public void logout(){
+    public void logout(int recipt){
 
     }
     public void joinGenreReadingClub(String genre){
 
     }
-    public void exitGenreReadingClub(String genre){
+    public void exitGenreReadingClub(int unsubscribeID){
 
     }
 

@@ -12,9 +12,8 @@ public class AddBookCommand implements StompFrames<StompBookClub> {
         this.book=book;
     }
     @Override
-    public Serializable execute(StompBookClub arg) { //todo
+    public void execute(StompBookClub arg) { //todo
         arg.addBook(genre,book);
-        return null;
     }
 
 }
