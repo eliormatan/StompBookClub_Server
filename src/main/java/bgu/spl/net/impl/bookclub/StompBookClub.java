@@ -120,6 +120,10 @@ public class StompBookClub {
             return "No Such User-SubscribeID Pair - Already Unsubscribed";
     }
 
+    public ConcurrentHashMap<String, CopyOnWriteArrayList<Pair<User, Integer>>> getRegisterdToGenreMap() {
+        return registerdToGenreMap;
+    }
+
     public StompFrames addBook(String genre, String book) {
         return null;
     }

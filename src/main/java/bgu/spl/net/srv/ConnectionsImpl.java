@@ -3,10 +3,6 @@ package bgu.spl.net.srv;
 import bgu.spl.net.impl.bookclub.StompBookClub;
 import bgu.spl.net.impl.bookclub.User;
 import javafx.util.Pair;
-
-import java.nio.channels.Channel;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 

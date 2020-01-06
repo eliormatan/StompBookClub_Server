@@ -15,7 +15,7 @@ public class StompServer {
 // you can use any server...
         Server.threadPerClient(
                 7777, //port
-                () -> new StompMessagingProtocolImpl(), //protocol factory
+                () -> new StompMessagingProtocolImpl<>(StompBookClub.getInstance()), //protocol factory
                 StompMsgEncoderDecoder::new //message encoder decoder factory
         ).serve();
 

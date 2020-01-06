@@ -7,14 +7,14 @@ import bgu.spl.net.srv.Connections;
 
 import java.nio.charset.StandardCharsets;
 
-public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol {
+public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> {
     private int connectionId;
     private Connections connections;
     private boolean shouldTerminate;
     private User user;
     private StompBookClub stompBookClub;
-    public StompMessagingProtocolImpl(){
-
+    public StompMessagingProtocolImpl(StompBookClub stompBookClub){
+        this.stompBookClub = stompBookClub;
     }
     @Override
     public void start(int connectionId, Connections<String> connections) {
@@ -22,7 +22,6 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol {
         this.connectionId = connectionId;
         this.connections = connections;
         user = null;
-        stompBookClub = StompBookClub.getInstance();
     }
 
     @Override
