@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConnectionsImpl<T> implements Connections<T> {
+
     private ConcurrentHashMap<Integer,ConnectionHandler<T>> connectionHashMap;
 
     public ConnectionsImpl(){
@@ -31,7 +32,7 @@ public class ConnectionsImpl<T> implements Connections<T> {
     public void send(String channel, T msg) {
         CopyOnWriteArrayList<Pair<User,Integer>> usersOfGenre= StompBookClub.getInstance().getRegisterdToGenreMap().get(channel);
         for(Pair<User,Integer> currUser: usersOfGenre){
-            ConnectionHandler connectionIdHandler = connectionHashMap.get(currUser.getValue());
+            ConnectionHandler connectionIdHandler = connectionHashMap.get(currUser.getKey().getUniqueId());
             if(connectionIdHandler!=null)
                 connectionIdHandler.send(msg);
         }
