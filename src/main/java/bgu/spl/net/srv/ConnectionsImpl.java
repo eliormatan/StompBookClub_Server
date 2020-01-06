@@ -11,6 +11,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConnectionsImpl<T> implements Connections<T> {
+
     private ConcurrentHashMap<Integer,ConnectionHandler<T>> connectionHashMap;
 
     public ConnectionsImpl(){
