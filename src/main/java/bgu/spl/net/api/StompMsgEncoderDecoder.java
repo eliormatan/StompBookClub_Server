@@ -14,7 +14,7 @@ public class StompMsgEncoderDecoder implements MessageEncoderDecoder<String> {
     public String decodeNextByte(byte nextByte) {
         if (nextByte == '\u0000') {
             pushByte(nextByte);
-            popString();
+            return popString();
         }
         pushByte(nextByte);
         return null; //not a full object yet
@@ -22,7 +22,7 @@ public class StompMsgEncoderDecoder implements MessageEncoderDecoder<String> {
 
     @Override
     public byte[] encode(String frame) { //TODO
-        return (frame + "\n" + "\u0000").getBytes(); //uses utf8 by default
+        return (frame).getBytes(); //uses utf8 by default
     }
 
     private void pushByte(byte nextByte) {

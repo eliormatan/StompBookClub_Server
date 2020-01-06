@@ -28,6 +28,16 @@ public class StompBookClub {
         globalID++;
         return globalID;
     }
+    public int findSubscribeID(String genre,String userName){
+        CopyOnWriteArrayList<Pair<User,Integer>> subscribedList = registerdToGenreMap.get(genre);
+        for(Pair<User,Integer> pair:subscribedList){
+            if(pair.getKey().getUsername().equals(userName))
+            {
+                return pair.getValue();
+            }
+        }
+        return -1;
+    }
     public User findUserByUniqueID(int uniqueID){
         Iterator<User> valueIterator=listOfUsers.values().iterator();
         while(valueIterator.hasNext()) {
@@ -82,15 +92,32 @@ public class StompBookClub {
         user.setUniqueId(-1);
 
     }
-    public void joinGenreReadingClub(User user,String genre,int subscriptionID){
+    public String joinGenreReadingClub(User user,String genre,int subscriptionID){
         if(registerdToGenreMap.contains(genre) && !registerdToGenreMap.get(genre).contains(user)) { //Not Subscribed yet
             registerdToGenreMap.computeIfAbsent(genre, a -> registerdToGenreMap.put(genre, new CopyOnWriteArrayList<>()));
             registerdToGenreMap.get(genre).add(new Pair(user,subscriptionID));
+            return "Joined Genre"+genre;
         }
+        return "Already Part of Genre"+genre;
     }
-    public StompFrames exitGenreReadingClub(int unsubscribeID){
-        return null;
-
+    public String exitGenreReadingClub(User user,int unsubscribeID){
+        Boolean found = false;
+        String genreAns ="";
+        for (Map.Entry<String, CopyOnWriteArrayList<Pair<User, Integer>>> entry : registerdToGenreMap.entrySet()){
+            genreAns = entry.getKey();
+            for(Pair<User,Integer> pair: entry.getValue()){
+                if(pair.getValue().equals(user) & pair.getKey().equals(unsubscribeID))
+                {
+                    registerdToGenreMap.get(genreAns).remove(pair);
+                    break;
+                }
+            }
+        }
+        if(genreAns!=""){
+            return "Exited Club"+genreAns;
+        }
+        else
+            return "No Such User-SubscribeID Pair - Already Unsubscribed";
     }
 
     public StompFrames addBook(String genre, String book) {
