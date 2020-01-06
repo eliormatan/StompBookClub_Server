@@ -1,17 +1,20 @@
 package bgu.spl.net.srv;
 
+import bgu.spl.net.impl.bookclub.StompBookClub;
+import bgu.spl.net.impl.bookclub.User;
+import javafx.util.Pair;
+
 import java.nio.channels.Channel;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class ConnectionsImpl<T> implements Connections<T> {
     private ConcurrentHashMap<Integer,ConnectionHandler<T>> connectionHashMap;
-    private ConcurrentHashMap<Integer, List<String>> channelsHashMap; //which geners the id joined for
-    //todo: where to implement the list?
 
     public ConnectionsImpl(){
         connectionHashMap= new ConcurrentHashMap<>();
-        channelsHashMap = new ConcurrentHashMap<>();
     }
 
     @Override
@@ -26,12 +29,11 @@ public class ConnectionsImpl<T> implements Connections<T> {
 
     @Override
     public void send(String channel, T msg) {
-        for(Integer curr: connectionHashMap.keySet()){
-            List<String> currChannels=channelsHashMap.get(curr);
-            if(currChannels!=null) {
-                if(currChannels.contains(channel))
-                    connectionHashMap.get(curr).send(msg);
-            }
+        CopyOnWriteArrayList<Pair<User,Integer>> usersOfGenre= StompBookClub.getInstance().getRegisterdToGenreMap().get(channel);
+        for(Pair<User,Integer> currUser: usersOfGenre){
+            ConnectionHandler connectionIdHandler = connectionHashMap.get(currUser.getValue());
+            if(connectionIdHandler!=null)
+                connectionIdHandler.send(msg);
         }
     }
 
@@ -42,10 +44,6 @@ public class ConnectionsImpl<T> implements Connections<T> {
 
     public void addToConnectionMap(int id, ConnectionHandler connectionHandler) {
         connectionHashMap.put(id, connectionHandler);
-    }
-
-    public void addToChannelsMap(int id, List<String> channels){
-        channelsHashMap.put(id,channels);
     }
 
 }
