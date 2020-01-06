@@ -9,10 +9,6 @@ public class ExitGenreReadingClubCommand extends BaseStompFrame {
     public ExitGenreReadingClubCommand(int unsubscribeID){
         this.unsubscribeID = unsubscribeID;
     }
-//    @Override
-//    public StompFrames run(StompBookClub arg) { //todo
-//        return arg.exitGenreReadingClub(unsubscribeID);
-//    }
 
     @Override
     public StompFrames run() {
