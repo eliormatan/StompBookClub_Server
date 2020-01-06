@@ -18,7 +18,7 @@ public class LogoutCommand extends BaseStompFrame {
     @Override
     public StompFrames run() {
         actionCreator.setLogin(false);
-        //TODO - DELETE ALL BOOKS AND STUFF
+        actionCreator.setUniqueId(-1);
         return new ReciptFrame(recipt);
     }
 }

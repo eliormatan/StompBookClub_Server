@@ -57,12 +57,16 @@ public class StompMessagingProtocolImpl implements StompMessagingProtocol {
                     shouldTerminate = true;
                 }
             }
-            case "SUBSCRIBE": {
-                String[] remainingRowSeperator = firstRowSeperator[1].split("\n",4);
-                String whoToJoin = remainingRowSeperator[0];
-                int subscribeID = Integer.parseInt(remainingRowSeperator[1].substring(remainingRowSeperator[1].indexOf(":")+1));
-                int reciptID = Integer.parseInt(remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":")+1));
-                JoinGenreReadingClubCommand subscribe = new JoinGenreReadingClubCommand(whoToJoin,subscribeID,reciptID);
+            case "SUBSCRIBE": { //NOT LOGGED IN
+                if(user!=null) {
+                    String[] remainingRowSeperator = firstRowSeperator[1].split("\n", 4);
+                    String whoToJoin = remainingRowSeperator[0];
+                    int subscribeID = Integer.parseInt(remainingRowSeperator[1].substring(remainingRowSeperator[1].indexOf(":") + 1));
+                    int reciptID = Integer.parseInt(remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":") + 1));
+                    JoinGenreReadingClubCommand subscribe = new JoinGenreReadingClubCommand(whoToJoin, subscribeID, reciptID);
+                    StompFrames response = subscribe.run();
+                }
+
             }
             case "UNSUBSCRIBE": {
                 String[] remainingRowSeperator = firstRowSeperator[1].split("\n",2);

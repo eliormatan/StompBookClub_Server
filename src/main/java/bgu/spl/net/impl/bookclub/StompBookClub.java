@@ -66,9 +66,11 @@ public class StompBookClub {
     public StompFrames logout(int recipt){
         return null;
     }
-    public StompFrames joinGenreReadingClub(String genre){
-        return null;
-
+    public void joinGenreReadingClub(User user,String genre){
+        if(registerdToGenreMap.contains(genre) && !registerdToGenreMap.get(genre).contains(user)) { //Not Subscribed yet
+            registerdToGenreMap.computeIfAbsent(genre, a -> registerdToGenreMap.put(genre, new ConcurrentLinkedQueue<>()));
+            registerdToGenreMap.get(genre).add(user);
+        }
     }
     public StompFrames exitGenreReadingClub(int unsubscribeID){
         return null;
