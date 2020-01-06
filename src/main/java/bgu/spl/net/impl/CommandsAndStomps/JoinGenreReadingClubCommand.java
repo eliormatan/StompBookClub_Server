@@ -15,6 +15,7 @@ public class JoinGenreReadingClubCommand extends BaseStompFrame {
     }
     @Override
     public StompFrames run() {
-        return null;
+        bookClub.joinGenreReadingClub(actionCreator,genre,subscribeID);
+        return new ReciptFrame(reciptID);
     }
 }

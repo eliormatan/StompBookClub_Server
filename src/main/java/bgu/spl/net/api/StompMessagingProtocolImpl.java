@@ -54,20 +54,31 @@ public class StompMessagingProtocolImpl implements StompMessagingProtocol {
                     StompFrames frame = logoutCommand.run();
                     connections.send(connectionId, frame);
                     connections.disconnect(connectionId);
+                    user=null;
                     shouldTerminate = true;
                 }
             }
-            case "SUBSCRIBE": {
-                String[] remainingRowSeperator = firstRowSeperator[1].split("\n",4);
-                String whoToJoin = remainingRowSeperator[0];
-                int subscribeID = Integer.parseInt(remainingRowSeperator[1].substring(remainingRowSeperator[1].indexOf(":")+1));
-                int reciptID = Integer.parseInt(remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":")+1));
-                JoinGenreReadingClubCommand subscribe = new JoinGenreReadingClubCommand(whoToJoin,subscribeID,reciptID);
+            case "SUBSCRIBE": { //NOT LOGGED IN
+                if(user!=null) {
+                    String[] remainingRowSeperator = firstRowSeperator[1].split("\n", 4);
+                    String whoToJoin = remainingRowSeperator[0];
+                    int reciptID = Integer.parseInt(remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":") + 1));
+                    int subscribeID = Integer.parseInt(remainingRowSeperator[1].substring(remainingRowSeperator[1].indexOf(":") + 1));
+                    JoinGenreReadingClubCommand subscribe = new JoinGenreReadingClubCommand(whoToJoin, subscribeID, reciptID);
+                    subscribe.setActionCreator(user);
+                    StompFrames response = subscribe.run();
+                    connections.send(connectionId,response);
+                }
+
             }
             case "UNSUBSCRIBE": {
-                String[] remainingRowSeperator = firstRowSeperator[1].split("\n",2);
-                int unsubscribeID = Integer.parseInt(remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":")+1));
-                ExitGenreReadingClubCommand unsubscribe = new ExitGenreReadingClubCommand(unsubscribeID);
+                if(user!=null) {
+                    String[] remainingRowSeperator = firstRowSeperator[1].split("\n", 2);
+                    int unsubscribeID = Integer.parseInt(remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":") + 1));
+                    ExitGenreReadingClubCommand unsubscribe = new ExitGenreReadingClubCommand(unsubscribeID);
+                    unsubscribe.setActionCreator(user);
+                    unsubscribe.run();
+                }
 
             }
             case "SEND":{

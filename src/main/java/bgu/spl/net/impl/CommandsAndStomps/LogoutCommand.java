@@ -10,15 +10,10 @@ public class LogoutCommand extends BaseStompFrame {
     public LogoutCommand(int recipt){
         this.recipt = recipt;
     }
-//    @Override
-//    public StompFrames run(StompBookClub arg) { //todo
-//        return arg.logout(recipt);
-//    }
 
     @Override
     public StompFrames run() {
-        actionCreator.setLogin(false);
-        //TODO - DELETE ALL BOOKS AND STUFF
+        bookClub.logout(actionCreator);
         return new ReciptFrame(recipt);
     }
 }

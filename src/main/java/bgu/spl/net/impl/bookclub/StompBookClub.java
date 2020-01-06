@@ -2,6 +2,7 @@ package bgu.spl.net.impl.bookclub;
 
 import bgu.spl.net.impl.CommandsAndStomps.StompFrames;
 import bgu.spl.net.impl.rci.RCIClient;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.util.Pair;
 
 import java.util.Iterator;
@@ -13,7 +14,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StompBookClub {
     private static StompBookClub bookClubInstance = new StompBookClub();
-    private ConcurrentHashMap<String, ConcurrentLinkedQueue<User>> registerdToGenreMap;
+    private ConcurrentHashMap<String, CopyOnWriteArrayList<Pair<User,Integer>>> registerdToGenreMap;
     private ConcurrentHashMap<String,User> listOfUsers;
     private int globalID;
     private StompBookClub(){
@@ -63,12 +64,29 @@ public class StompBookClub {
         }
 
     }
-    public StompFrames logout(int recipt){
-        return null;
-    }
-    public StompFrames joinGenreReadingClub(String genre){
-        return null;
+    public void logout(User user){
+        Iterator<CopyOnWriteArrayList<Pair<User, Integer>>> valueIterator = registerdToGenreMap.values().iterator();
+        while(valueIterator.hasNext()){
+            CopyOnWriteArrayList<Pair<User, Integer>> next = valueIterator.next();
+            Iterator<Pair<User, Integer>> pairsIter = next.iterator();
+            Boolean found = false;
+            while(!found & pairsIter.hasNext()){
+                Pair<User, Integer> pair = pairsIter.next();
+                if(pair.getKey().equals(user)){
+                    next.remove(pair);
+                    found = true;
+                }
+            }
+        }
+        user.setLogin(false);
+        user.setUniqueId(-1);
 
+    }
+    public void joinGenreReadingClub(User user,String genre,int subscriptionID){
+        if(registerdToGenreMap.contains(genre) && !registerdToGenreMap.get(genre).contains(user)) { //Not Subscribed yet
+            registerdToGenreMap.computeIfAbsent(genre, a -> registerdToGenreMap.put(genre, new CopyOnWriteArrayList<>()));
+            registerdToGenreMap.get(genre).add(new Pair(user,subscriptionID));
+        }
     }
     public StompFrames exitGenreReadingClub(int unsubscribeID){
         return null;
