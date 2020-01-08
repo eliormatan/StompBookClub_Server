@@ -13,9 +13,11 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
     private boolean shouldTerminate;
     private User user;
     private StompBookClub stompBookClub;
-    public StompMessagingProtocolImpl(StompBookClub stompBookClub){
+
+    public StompMessagingProtocolImpl(StompBookClub stompBookClub) {
         this.stompBookClub = stompBookClub;
     }
+
     @Override
     public void start(int connectionId, Connections<String> connections) {
         this.shouldTerminate = false;
@@ -28,26 +30,24 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
     public void process(String message) { //TODO
         String result = message;
         String[] firstRowSeperator = result.split("\n", 2);
-        switch (firstRowSeperator[0]) {
-            case "CONNECT": {
-                OnConnect(firstRowSeperator[1]);
-            }
-            case "DISCONNECT": {
-                OnDisconnect(firstRowSeperator[1]);
-            }
-            case "SUBSCRIBE": {
-                OnSubscribe(firstRowSeperator[1]);
-            }
-            case "UNSUBSCRIBE": {
-                OnUnsubscribe(firstRowSeperator[1]);
-            }
-            case "SEND": {
-                OnSend(firstRowSeperator[1]);
-            }
-
+        if (firstRowSeperator[0].equals("CONNECT")) {
+            OnConnect(firstRowSeperator[1]);
+        }
+        else if (firstRowSeperator[0].equals("DISCONNECT")) {
+            OnDisconnect(firstRowSeperator[1]);
+        }
+        else if (firstRowSeperator[0].equals("SUBSCRIBE")) {
+            OnSubscribe(firstRowSeperator[1]);
+        }
+        else if (firstRowSeperator[0].equals("UNSUBSCRIBE")) {
+            OnUnsubscribe(firstRowSeperator[1]);
+        }
+        else if (firstRowSeperator[0].equals("SEND")) {
+            OnSend(firstRowSeperator[1]);
         }
 
     }
+
 
     private void OnConnect(String restOfMsg) {
         String[] remainingRowSeperator = restOfMsg.split("\n", 5);
@@ -55,27 +55,24 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
         String userName = remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":") + 1);
         String passWord = remainingRowSeperator[3].substring(remainingRowSeperator[3].indexOf(":") + 1);
         int ans = stompBookClub.login(userName, passWord, connectionId);
-        switch (ans) {
-            case 0: {
-                //Complete Frame to the user
-                connections.send(connectionId, new ConnectedFrame(version));
-                user = stompBookClub.findUserByUniqueID(connectionId);
-                user.setUniqueId(connectionId);
+        if (ans == 0) {
+            //Complete Frame to the user
+            connections.send(connectionId, new ConnectedFrame(version));
+            user = stompBookClub.findUserByUniqueID(connectionId);
+            user.setUniqueId(connectionId);
 
-            }
-            case 1: {
-                connections.send(connectionId, new ErrorFrame("User Already Logged IN", stompBookClub.getGlobalID()));
-                shouldTerminate = true;
-                connections.disconnect(connectionId);
-                //Error Frame to the user - Already Logged IN
-            }
-            case 2: {
-                connections.send(connectionId, new ErrorFrame("User Has Wrong Password", stompBookClub.getGlobalID()));
-                shouldTerminate = true;
-                connections.disconnect(connectionId);
-                //Error Frame to the user - Wrong PASS
-            }
+        } else if (ans == 1) {
+            connections.send(connectionId, new ErrorFrame("User Already Logged IN", stompBookClub.getGlobalID()));
+            shouldTerminate = true;
+            connections.disconnect(connectionId);
+            //Error Frame to the user - Already Logged IN
+        } else {
+            connections.send(connectionId, new ErrorFrame("User Has Wrong Password", stompBookClub.getGlobalID()));
+            shouldTerminate = true;
+            connections.disconnect(connectionId);
+            //Error Frame to the user - Wrong PASS
         }
+
     }
 
     private void OnDisconnect(String restOfMsg) {
