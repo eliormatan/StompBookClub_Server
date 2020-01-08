@@ -13,11 +13,13 @@ public class StompBookClub {
     private ConcurrentHashMap<String, CopyOnWriteArrayList<Pair<User,Integer>>> registerdToGenreMap;
     private ConcurrentHashMap<String,User> listOfUsers;
     private int globalID;
+
     private StompBookClub(){
         registerdToGenreMap = new ConcurrentHashMap<>();
         listOfUsers = new ConcurrentHashMap<>();
         globalID = 0;
     }
+
     public static StompBookClub getInstance(){ return bookClubInstance; }
 
     public int getGlobalID() {

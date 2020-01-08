@@ -4,6 +4,8 @@ import bgu.spl.net.api.MessageEncoderDecoder;
 import bgu.spl.net.api.MessagingProtocol;
 import bgu.spl.net.api.StompMessagingProtocol;
 import bgu.spl.net.api.StompMsgEncoderDecoder;
+import bgu.spl.net.impl.CommandsAndStomps.BaseStompFrame;
+import bgu.spl.net.impl.CommandsAndStomps.StompFrames;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -59,7 +61,7 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     public void send(T msg) {
         if (msg != null) {
             try {
-                out.write(encdec.encode(msg));
+                out.write(encdec.encode(((StompFrames)msg).makeItStomps()));
                 out.flush();
             }
             catch (IOException e) { }
