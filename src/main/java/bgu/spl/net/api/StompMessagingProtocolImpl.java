@@ -14,6 +14,10 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
     private User user;
     private StompBookClub stompBookClub;
 
+    public void setConnectionId(int connectionId) {
+        this.connectionId = connectionId;
+    }
+
     public StompMessagingProtocolImpl(StompBookClub stompBookClub) {
         this.stompBookClub = stompBookClub;
     }
@@ -29,6 +33,7 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
     @Override
     public void process(String message) { //TODO
         String result = message;
+        System.out.println(result);
         String[] firstRowSeperator = result.split("\n", 2);
         if (firstRowSeperator[0].equals("CONNECT")) {
             OnConnect(firstRowSeperator[1]);
@@ -57,17 +62,19 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
         int ans = stompBookClub.login(userName, passWord, connectionId);
         if (ans == 0) {
             //Complete Frame to the user
-            connections.send(connectionId, new ConnectedFrame(version));
+            if(!connections.send(connectionId, new ConnectedFrame(version)))
+                forceDisconnect();
             user = stompBookClub.findUserByUniqueID(connectionId);
             user.setUniqueId(connectionId);
-
         } else if (ans == 1) {
-            connections.send(connectionId, new ErrorFrame("User Already Logged IN", stompBookClub.getGlobalID()));
+            if(!connections.send(connectionId, new ErrorFrame("User Already Logged IN", stompBookClub.getGlobalID())))
+                forceDisconnect();
             shouldTerminate = true;
             connections.disconnect(connectionId);
             //Error Frame to the user - Already Logged IN
         } else {
-            connections.send(connectionId, new ErrorFrame("User Has Wrong Password", stompBookClub.getGlobalID()));
+            if(!connections.send(connectionId, new ErrorFrame("User Has Wrong Password", stompBookClub.getGlobalID())))
+                forceDisconnect();
             shouldTerminate = true;
             connections.disconnect(connectionId);
             //Error Frame to the user - Wrong PASS
@@ -90,11 +97,12 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
     private void OnSubscribe(String restOfMsg) {
         if (user != null) {
             String[] remainingRowSeperator = restOfMsg.split("\n", 4);
-            String genreToJoin = remainingRowSeperator[0];
+            String genreToJoin = remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":") + 1);
             int reciptID = Integer.parseInt(remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":") + 1));
             int subscribeID = Integer.parseInt(remainingRowSeperator[1].substring(remainingRowSeperator[1].indexOf(":") + 1));
-            String bodyOfRecipt = stompBookClub.joinGenreReadingClub(user, genreToJoin, subscribeID);
-            connections.send(connectionId, new ReciptFrame(reciptID, bodyOfRecipt));
+            stompBookClub.joinGenreReadingClub(user, genreToJoin, subscribeID);
+            if(!connections.send(connectionId, new ReciptFrame(reciptID, "")))
+                forceDisconnect();
         }
     }
 
@@ -103,7 +111,8 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
             String[] remainingRowSeperator = restOfMsg.split("\n", 2);
             int unsubscribeID = Integer.parseInt(remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":") + 1));
             String reciptBody = stompBookClub.exitGenreReadingClub(user, unsubscribeID);
-            connections.send(connectionId, new ReciptFrame(unsubscribeID, reciptBody));
+            if(!connections.send(connectionId, new ReciptFrame(unsubscribeID, reciptBody)))
+                forceDisconnect();
         }
     }
 
@@ -115,12 +124,18 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
             String userName = remainingRowSeperator[1].substring(0, remainingRowSeperator[1].indexOf(' '));
             int subscribeID = stompBookClub.findSubscribeID(destenation, userName);
             connections.send(destenation, new MessageFrame(subscribeID, msgID, destenation, remainingRowSeperator[1]));
-
         }
     }
+
 
     @Override
     public boolean shouldTerminate() {
         return shouldTerminate;
+    }
+
+    public void forceDisconnect(){
+        if(user!=null) {
+            user.setLogin(false);
+        }
     }
 }

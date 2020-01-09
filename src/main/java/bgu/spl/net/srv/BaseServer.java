@@ -33,8 +33,12 @@ public abstract class BaseServer<T> implements Server<T> {
 
     }
 
+    private void increaseCID(){
+        connectionID++;
+    }
+
     private int getConnectionID(){
-        return connectionID++;
+        return connectionID;
     }
     @Override
     public void serve() {
@@ -51,7 +55,8 @@ public abstract class BaseServer<T> implements Server<T> {
                         connections,
                         getConnectionID()
                 );
-                connections.addToConnectionMap(connectionID,handler);
+                connections.addToConnectionMap(getConnectionID(),handler);
+                increaseCID();
                 execute(handler);
             }
         } catch (IOException ex) {

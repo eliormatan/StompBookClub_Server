@@ -29,6 +29,7 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
         this.protocol = protocol;
         this.connections = connections;
         this.connectionID = connectionID;
+        protocol.setConnectionId(connectionID);
     }
 
     @Override
@@ -44,7 +45,8 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
                     protocol.process(nextMessage);
                 }
             }
-
+            System.out.println("user is out");
+            protocol.forceDisconnect();
         } catch (IOException ex) {
             ex.printStackTrace();
         }
@@ -53,6 +55,7 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
 
     @Override
     public void close() throws IOException {
+        protocol.forceDisconnect();
         connected = false;
         sock.close();
     }
@@ -61,10 +64,12 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     public void send(T msg) {
         if (msg != null) {
             try {
-                out.write(encdec.encode(((StompFrames)msg).makeItStomps()));
+                out.write(encdec.encode(((StompFrames) msg).makeItStomps()));
                 out.flush();
+            } catch (IOException e) {
+                protocol.forceDisconnect();
+                connected = false;
             }
-            catch (IOException e) { }
         }
     }
 }

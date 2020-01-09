@@ -28,10 +28,11 @@ public class StompBookClub {
     }
     public int findSubscribeID(String genre,String userName){
         CopyOnWriteArrayList<Pair<User,Integer>> subscribedList = registerdToGenreMap.get(genre);
-        for(Pair<User,Integer> pair:subscribedList){
-            if(pair.getKey().getUsername().equals(userName))
-            {
-                return pair.getValue();
+        if(subscribedList!=null){
+            for (Pair<User, Integer> pair : subscribedList) {
+                if (pair.getKey().getUsername().equals(userName)) {
+                    return pair.getValue();
+                }
             }
         }
         return -1;
@@ -46,7 +47,7 @@ public class StompBookClub {
         return null;
     }
     public int login(String userName, String passWord, int connectionID){ //TODO: Return type and action
-        if(listOfUsers.contains(userName)){
+        if(listOfUsers.containsKey(userName)){
             User userInSystem = listOfUsers.get(userName);
             if(!userInSystem.isLogin()) {
                 if (userInSystem.getPassword().equals(passWord)) {
@@ -91,12 +92,11 @@ public class StompBookClub {
 
     }
     public String joinGenreReadingClub(User user,String genre,int subscriptionID){
-        if(registerdToGenreMap.contains(genre) && !registerdToGenreMap.get(genre).contains(user)) { //Not Subscribed yet
-            registerdToGenreMap.computeIfAbsent(genre, a -> registerdToGenreMap.put(genre, new CopyOnWriteArrayList<>()));
-            registerdToGenreMap.get(genre).add(new Pair(user,subscriptionID));
-            return "Joined Genre"+genre;
+        if(!registerdToGenreMap.containsKey(genre)){
+            registerdToGenreMap.put(genre,new CopyOnWriteArrayList<>());
         }
-        return "Already Part of Genre"+genre;
+        registerdToGenreMap.get(genre).add(new Pair(user,subscriptionID));
+        return "";
     }
     public String exitGenreReadingClub(User user,int unsubscribeID){
         Boolean found = false;

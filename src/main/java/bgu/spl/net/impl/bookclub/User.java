@@ -51,22 +51,22 @@ public class User {
         this.booksInventory.computeIfAbsent(book.getBookGenre(),b->new ArrayList<>()).add(book);
         book.addToBorrowHistory(this);
     }
-    public void borrowBook(Book book,User lender){
-        this.addBook(book);
-        lender.removeBook(book);
-    }
-    public void removeBook(Book book){
-        ArrayList<Book> genreBooks=booksInventory.get(book.getBookGenre());
-        genreBooks.remove(book);
-        if(genreBooks.size()==0) booksInventory.remove(book.getBookGenre());
-    }
-    public void returnBookToLender(Book book,User lender){
-        book.removeFromBorrowHistory();
-        ArrayList<Book> genreBooks=booksInventory.get(book.getBookGenre());
-        genreBooks.remove(book);
-        if(genreBooks.size()==0) booksInventory.remove(book.getBookGenre());
-        lender.getBooksInventory().computeIfAbsent(book.getBookGenre(),b->new ArrayList<>()).add(book);
-    }
+//    public void borrowBook(Book book,User lender){
+//        this.addBook(book);
+//        lender.removeBook(book);
+//    }
+//    public void removeBook(Book book){
+//        ArrayList<Book> genreBooks=booksInventory.get(book.getBookGenre());
+//        genreBooks.remove(book);
+//        if(genreBooks.size()==0) booksInventory.remove(book.getBookGenre());
+//    }
+//    public void returnBookToLender(Book book,User lender){
+//        book.removeFromBorrowHistory();
+//        ArrayList<Book> genreBooks=booksInventory.get(book.getBookGenre());
+//        genreBooks.remove(book);
+//        if(genreBooks.size()==0) booksInventory.remove(book.getBookGenre());
+//        lender.getBooksInventory().computeIfAbsent(book.getBookGenre(),b->new ArrayList<>()).add(book);
+//    }
  }
 
 

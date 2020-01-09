@@ -11,7 +11,7 @@ public class StompServer {
         StompBookClub bookClub = StompBookClub.getInstance(); //one shared object
 // you can use any server...
         Server.threadPerClient(
-                7777, //port
+                1234, //port
                 () -> new StompMessagingProtocolImpl<>(bookClub), //protocol factory
                 StompMsgEncoderDecoder::new //message encoder decoder factory
         ).serve();
