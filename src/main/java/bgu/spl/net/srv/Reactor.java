@@ -21,7 +21,7 @@ public class Reactor<T> implements Server<T> {
     private final Supplier<MessageEncoderDecoder<T>> readerFactory;
     private final ActorThreadPool pool;
     private Selector selector;
-    private Connections connections;
+    private ConnectionsImpl connections;
     private int connetionID;
     private Thread selectorThread;
     private final ConcurrentLinkedQueue<Runnable> selectorTasks = new ConcurrentLinkedQueue<>();
@@ -40,7 +40,7 @@ public class Reactor<T> implements Server<T> {
         this.connetionID=0;
     }
 
-    private int getNextCID(){
+    private int nextCID(){
         return connetionID++;
     }
     @Override
@@ -109,7 +109,9 @@ public class Reactor<T> implements Server<T> {
                 clientChan,
                 this,
                 connections,
-                getNextCID());
+                connetionID);
+        connections.addToConnectionMap(connetionID,handler);
+        nextCID();
         clientChan.register(selector, SelectionKey.OP_READ, handler);
     }
 
