@@ -54,7 +54,6 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
             buf.flip();
             return () -> {
                 try {
-                    protocol.start(connectionID,connections);
                     while (buf.hasRemaining()) {
                         String nextMessage = (String)encdec.decodeNextByte(buf.get());
                         if (nextMessage != null) {

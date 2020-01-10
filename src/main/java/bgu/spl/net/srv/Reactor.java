@@ -57,10 +57,8 @@ public class Reactor<T> implements Server<T> {
 			System.out.println("Server started");
 
             while (!Thread.currentThread().isInterrupted()) {
-
                 selector.select();
                 runSelectionThreadTasks();
-
                 for (SelectionKey key : selector.selectedKeys()) {
 
                     if (!key.isValid()) {
@@ -71,9 +69,7 @@ public class Reactor<T> implements Server<T> {
                         handleReadWrite(key);
                     }
                 }
-
                 selector.selectedKeys().clear(); //clear the selected keys set so that we can know about new events
-
             }
 
         } catch (ClosedSelectorException ex) {
@@ -103,16 +99,19 @@ public class Reactor<T> implements Server<T> {
     private void handleAccept(ServerSocketChannel serverChan, Selector selector) throws IOException {
         SocketChannel clientChan = serverChan.accept();
         clientChan.configureBlocking(false);
+        StompMessagingProtocol proto = protocolFactory.get();
         final NonBlockingConnectionHandler<T> handler = new NonBlockingConnectionHandler<>(
                 readerFactory.get(),
-                protocolFactory.get(),
+                proto,
                 clientChan,
                 this,
                 connections,
                 connetionID);
+        clientChan.register(selector, SelectionKey.OP_READ, handler);
+        proto.start(connetionID,connections);
         connections.addToConnectionMap(connetionID,handler);
         nextCID();
-        clientChan.register(selector, SelectionKey.OP_READ, handler);
+
     }
 
     private void handleReadWrite(SelectionKey key) {
