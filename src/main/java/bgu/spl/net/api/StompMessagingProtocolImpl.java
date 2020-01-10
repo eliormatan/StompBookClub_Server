@@ -85,7 +85,7 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
     private void OnDisconnect(String restOfMsg) {
         if (user != null) {
             String[] remainingRowSeperator = restOfMsg.split("\n", 2);
-            int reciptID = Integer.parseInt(remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":") + 1));
+            int reciptID = Integer.parseInt(remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":") + 1));
             stompBookClub.logout(user);
             connections.send(connectionId, new ReciptFrame(reciptID, ""));
             connections.disconnect(connectionId);
@@ -121,7 +121,14 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
             String[] remainingRowSeperator = restOfMsg.split("\n", 3);
             String destenation = remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":") + 1);
             int msgID = stompBookClub.getGlobalID();
-            String userName = remainingRowSeperator[1].substring(0, remainingRowSeperator[1].indexOf(' '));
+            String userName;
+            if(remainingRowSeperator[1].indexOf(' ')!=-1) {
+                 userName = remainingRowSeperator[1].substring(0, remainingRowSeperator[1].indexOf(' '));
+            }
+            else
+            {
+                 userName = remainingRowSeperator[1].substring(0, remainingRowSeperator[1].indexOf(':'));
+            }
             int subscribeID = stompBookClub.findSubscribeID(destenation, userName);
             connections.send(destenation, new MessageFrame(subscribeID, msgID, destenation, remainingRowSeperator[1]));
         }

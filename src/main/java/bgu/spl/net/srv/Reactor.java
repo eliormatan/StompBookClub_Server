@@ -21,7 +21,8 @@ public class Reactor<T> implements Server<T> {
     private final Supplier<MessageEncoderDecoder<T>> readerFactory;
     private final ActorThreadPool pool;
     private Selector selector;
-
+    private Connections connections;
+    private int connetionID;
     private Thread selectorThread;
     private final ConcurrentLinkedQueue<Runnable> selectorTasks = new ConcurrentLinkedQueue<>();
 
@@ -35,8 +36,13 @@ public class Reactor<T> implements Server<T> {
         this.port = port;
         this.protocolFactory = protocolFactory;
         this.readerFactory = readerFactory;
+        this.connections=new ConnectionsImpl();
+        this.connetionID=0;
     }
 
+    private int getNextCID(){
+        return connetionID++;
+    }
     @Override
     public void serve() {
 	selectorThread = Thread.currentThread();
@@ -101,7 +107,9 @@ public class Reactor<T> implements Server<T> {
                 readerFactory.get(),
                 protocolFactory.get(),
                 clientChan,
-                this);
+                this,
+                connections,
+                getNextCID());
         clientChan.register(selector, SelectionKey.OP_READ, handler);
     }
 

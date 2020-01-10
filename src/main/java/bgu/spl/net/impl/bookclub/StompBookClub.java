@@ -91,12 +91,18 @@ public class StompBookClub {
         user.setUniqueId(-1);
 
     }
-    public String joinGenreReadingClub(User user,String genre,int subscriptionID){
+    public void joinGenreReadingClub(User user,String genre,int subscriptionID){
         if(!registerdToGenreMap.containsKey(genre)){
             registerdToGenreMap.put(genre,new CopyOnWriteArrayList<>());
         }
+        CopyOnWriteArrayList<Pair<User,Integer>> genreArr = registerdToGenreMap.get(genre);
+        for(Pair<User,Integer> p:genreArr){
+            if(p.getKey() == user){
+                genreArr.remove(p);
+                break;
+            }
+        }
         registerdToGenreMap.get(genre).add(new Pair(user,subscriptionID));
-        return "";
     }
     public String exitGenreReadingClub(User user,int unsubscribeID){
         Boolean found = false;
@@ -104,7 +110,7 @@ public class StompBookClub {
         for (Map.Entry<String, CopyOnWriteArrayList<Pair<User, Integer>>> entry : registerdToGenreMap.entrySet()){
             genreAns = entry.getKey();
             for(Pair<User,Integer> pair: entry.getValue()){
-                if(pair.getValue().equals(user) & pair.getKey().equals(unsubscribeID))
+                if(pair.getValue().equals(unsubscribeID) & pair.getKey().equals(user))
                 {
                     registerdToGenreMap.get(genreAns).remove(pair);
                     break;
