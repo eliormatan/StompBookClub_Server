@@ -75,6 +75,8 @@ public class NonBlockingConnectionHandler<T> implements ConnectionHandler<T> {
     public void close() {
         try {
             chan.close();
+            protocol.forceDisconnect();
+            connections.disconnect(connectionID);
         } catch (IOException ex) {
             ex.printStackTrace();
         }

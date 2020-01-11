@@ -10,7 +10,7 @@ public class ConnectedFrame extends BaseStompFrame{
     @Override
     public String makeItStomps() {
         String stompWise = "CONNECTED"+"\n"
-                +"version:"+version+"\n"+
+                +"version:"+version+"\n"+"\n"+
                 "\u0000";
         return stompWise;
     }

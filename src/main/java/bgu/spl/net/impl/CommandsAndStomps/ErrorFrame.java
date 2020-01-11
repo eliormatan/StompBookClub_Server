@@ -17,7 +17,7 @@ public class ErrorFrame extends BaseStompFrame{
     public String makeItStomps() {
         String stompWise = "ERROR"+"\n"+
                 "receipt-id:"+globalID+"\n"+
-                "message:"+error+"\n"+
+                "message:"+error+"\n"+"\n"+
                 "\u0000";
         return stompWise;
     }

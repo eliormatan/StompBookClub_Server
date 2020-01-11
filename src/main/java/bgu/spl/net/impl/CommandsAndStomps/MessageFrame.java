@@ -19,7 +19,7 @@ public class MessageFrame extends BaseStompFrame {
         String stompWise = "MESSAGE"+"\n"+
                 "subscription:"+subscriptionID+"\n"+
                 "Message-id:"+msgID+"\n"+
-                "destination:"+destenation+"\n"+
+                "destination:"+destenation+"\n"+"\n"+
                 body+
                 "\u0000";
         return stompWise;

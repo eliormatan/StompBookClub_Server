@@ -104,7 +104,7 @@ public class StompBookClub {
         }
         registerdToGenreMap.get(genre).add(new Pair(user,subscriptionID));
     }
-    public String exitGenreReadingClub(User user,int unsubscribeID){
+    public void exitGenreReadingClub(User user,int unsubscribeID){
         Boolean found = false;
         String genreAns ="";
         for (Map.Entry<String, CopyOnWriteArrayList<Pair<User, Integer>>> entry : registerdToGenreMap.entrySet()){
@@ -117,11 +117,6 @@ public class StompBookClub {
                 }
             }
         }
-        if(genreAns!=""){
-            return "Exited Club"+genreAns;
-        }
-        else
-            return "No Such User-SubscribeID Pair - Already Unsubscribed";
     }
 
     public ConcurrentHashMap<String, CopyOnWriteArrayList<Pair<User, Integer>>> getRegisterdToGenreMap() {

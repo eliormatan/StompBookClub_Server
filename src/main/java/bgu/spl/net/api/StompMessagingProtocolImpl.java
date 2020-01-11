@@ -87,7 +87,7 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
             String[] remainingRowSeperator = restOfMsg.split("\n", 2);
             int reciptID = Integer.parseInt(remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":") + 1));
             stompBookClub.logout(user);
-            connections.send(connectionId, new ReciptFrame(reciptID, ""));
+            connections.send(connectionId, new ReciptFrame(reciptID));
             connections.disconnect(connectionId);
             user = null;
             shouldTerminate = true;
@@ -101,7 +101,7 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
             int reciptID = Integer.parseInt(remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":") + 1));
             int subscribeID = Integer.parseInt(remainingRowSeperator[1].substring(remainingRowSeperator[1].indexOf(":") + 1));
             stompBookClub.joinGenreReadingClub(user, genreToJoin, subscribeID);
-            if(!connections.send(connectionId, new ReciptFrame(reciptID, "")))
+            if(!connections.send(connectionId, new ReciptFrame(reciptID)))
                 forceDisconnect();
         }
     }
@@ -110,27 +110,27 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
         if (user != null) {
             String[] remainingRowSeperator = restOfMsg.split("\n", 2);
             int unsubscribeID = Integer.parseInt(remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":") + 1));
-            String reciptBody = stompBookClub.exitGenreReadingClub(user, unsubscribeID);
-            if(!connections.send(connectionId, new ReciptFrame(unsubscribeID, reciptBody)))
+            stompBookClub.exitGenreReadingClub(user, unsubscribeID);
+            if(!connections.send(connectionId, new ReciptFrame(unsubscribeID)))
                 forceDisconnect();
         }
     }
 
     private void OnSend(String restOfMsg) {
         if (user != null) {
-            String[] remainingRowSeperator = restOfMsg.split("\n", 3);
+            String[] remainingRowSeperator = restOfMsg.split("\n", 4);
             String destenation = remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":") + 1);
             int msgID = stompBookClub.getGlobalID();
             String userName;
-            if(remainingRowSeperator[1].indexOf(' ')!=-1) {
-                 userName = remainingRowSeperator[1].substring(0, remainingRowSeperator[1].indexOf(' '));
+            if(remainingRowSeperator[2].indexOf(' ')!=-1) {
+                 userName = remainingRowSeperator[2].substring(0, remainingRowSeperator[2].indexOf(' '));
             }
             else
             {
-                 userName = remainingRowSeperator[1].substring(0, remainingRowSeperator[1].indexOf(':'));
+                userName = remainingRowSeperator[2].substring(0, remainingRowSeperator[2].indexOf(':'));
             }
             int subscribeID = stompBookClub.findSubscribeID(destenation, userName);
-            connections.send(destenation, new MessageFrame(subscribeID, msgID, destenation, remainingRowSeperator[1]));
+            connections.send(destenation, new MessageFrame(subscribeID, msgID, destenation, remainingRowSeperator[2]));
         }
     }
 

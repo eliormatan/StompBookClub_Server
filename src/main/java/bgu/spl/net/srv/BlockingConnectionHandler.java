@@ -56,6 +56,7 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
     @Override
     public void close() throws IOException {
         protocol.forceDisconnect();
+        connections.disconnect(connectionID);
         connected = false;
         sock.close();
     }
@@ -68,6 +69,7 @@ public class BlockingConnectionHandler<T> implements Runnable, ConnectionHandler
                 out.flush();
             } catch (IOException e) {
                 protocol.forceDisconnect();
+                connections.disconnect(connectionID);
                 connected = false;
             }
         }
