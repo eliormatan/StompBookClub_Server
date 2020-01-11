@@ -9,12 +9,12 @@ public class User {
     private int uniqueId;
     private String username;
     private String password;
-    private AtomicBoolean login;
+    private boolean login;
 
     public User(String username,String password){
         this.username=username;
         this.password=password;
-        this.login=new AtomicBoolean(false);
+        this.login=false;
         uniqueId=-1;
     }
 
@@ -35,10 +35,10 @@ public class User {
     }
 
     public boolean isLogin() {
-        return login.get();
+        return login;
     }
 
-    public void setLogin(boolean login) { this.login.set(login);
+    public void setLogin(boolean login) { this.login = login;
     }
 
  }
