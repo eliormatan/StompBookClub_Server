@@ -55,31 +55,32 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
 
 
     private void OnConnect(String restOfMsg) {
-        String[] remainingRowSeperator = restOfMsg.split("\n", 5);
-        String version = remainingRowSeperator[1].substring(remainingRowSeperator[1].indexOf(":") + 1);
-        String userName = remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":") + 1);
-        String passWord = remainingRowSeperator[3].substring(remainingRowSeperator[3].indexOf(":") + 1);
-        int ans = stompBookClub.login(userName, passWord, connectionId);
-        if (ans == 0) {
-            //Complete Frame to the user
-            if(!connections.send(connectionId, new ConnectedFrame(version)))
-                forceDisconnect();
-            user = stompBookClub.findUserByUniqueID(connectionId);
-            user.setUniqueId(connectionId);
-        } else if (ans == 1) {
-            if(!connections.send(connectionId, new ErrorFrame("User Already Logged IN", stompBookClub.getGlobalID())))
-                forceDisconnect();
-            shouldTerminate = true;
-            connections.disconnect(connectionId);
-            //Error Frame to the user - Already Logged IN
-        } else {
-            if(!connections.send(connectionId, new ErrorFrame("User Has Wrong Password", stompBookClub.getGlobalID())))
-                forceDisconnect();
-            shouldTerminate = true;
-            connections.disconnect(connectionId);
-            //Error Frame to the user - Wrong PASS
+        if(user==null) {
+            String[] remainingRowSeperator = restOfMsg.split("\n", 5);
+            String version = remainingRowSeperator[1].substring(remainingRowSeperator[1].indexOf(":") + 1);
+            String userName = remainingRowSeperator[2].substring(remainingRowSeperator[2].indexOf(":") + 1);
+            String passWord = remainingRowSeperator[3].substring(remainingRowSeperator[3].indexOf(":") + 1);
+            int ans = stompBookClub.login(userName, passWord, connectionId);
+            if (ans == 0) {
+                //Complete Frame to the user
+                if (!connections.send(connectionId, new ConnectedFrame(version)))
+                    forceDisconnect();
+                user = stompBookClub.findUserByUniqueID(connectionId);
+                user.setUniqueId(connectionId);
+            } else if (ans == 1) {
+                if (!connections.send(connectionId, new ErrorFrame("User Already Logged IN", stompBookClub.getGlobalID())))
+                    forceDisconnect();
+                shouldTerminate = true;
+                connections.disconnect(connectionId);
+                //Error Frame to the user - Already Logged IN
+            } else {
+                if (!connections.send(connectionId, new ErrorFrame("User Has Wrong Password", stompBookClub.getGlobalID())))
+                    forceDisconnect();
+                shouldTerminate = true;
+                connections.disconnect(connectionId);
+                //Error Frame to the user - Wrong PASS
+            }
         }
-
     }
 
     private void OnDisconnect(String restOfMsg) {
@@ -88,9 +89,9 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
             int reciptID = Integer.parseInt(remainingRowSeperator[0].substring(remainingRowSeperator[0].indexOf(":") + 1));
             stompBookClub.logout(user);
             connections.send(connectionId, new ReciptFrame(reciptID));
-            connections.disconnect(connectionId);
             user = null;
             shouldTerminate = true;
+            connections.disconnect(connectionId);
         }
     }
 
