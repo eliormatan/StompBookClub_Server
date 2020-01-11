@@ -33,7 +33,6 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
     @Override
     public void process(String message) { //TODO
         String result = message;
-        System.out.println(result);
         String[] firstRowSeperator = result.split("\n", 2);
         if (firstRowSeperator[0].equals("CONNECT")) {
             OnConnect(firstRowSeperator[1]);
