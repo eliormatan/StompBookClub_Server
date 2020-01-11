@@ -107,11 +107,10 @@ public class Reactor<T> implements Server<T> {
                 this,
                 connections,
                 connetionID);
-        clientChan.register(selector, SelectionKey.OP_READ, handler);
         proto.start(connetionID,connections);
         connections.addToConnectionMap(connetionID,handler);
         nextCID();
-
+        clientChan.register(selector, SelectionKey.OP_READ, handler);
     }
 
     private void handleReadWrite(SelectionKey key) {

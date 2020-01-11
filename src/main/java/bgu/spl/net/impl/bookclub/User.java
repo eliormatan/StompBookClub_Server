@@ -9,13 +9,11 @@ public class User {
     private String username;
     private String password;
     private boolean login;
-    private ConcurrentHashMap<String, ArrayList<Book>> booksInventory;
 
     public User(String username,String password){
         this.username=username;
         this.password=password;
         this.login=false;
-        booksInventory=new ConcurrentHashMap<>();
         uniqueId=-1;
     }
 
@@ -37,10 +35,6 @@ public class User {
 
     public boolean isLogin() {
         return login;
-    }
-
-    public ConcurrentHashMap<String, ArrayList<Book>> getBooksInventory() {
-        return booksInventory;
     }
 
     public void setLogin(boolean login) {
