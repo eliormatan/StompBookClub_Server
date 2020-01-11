@@ -46,30 +46,28 @@ public class StompBookClub {
         }
         return null;
     }
-    public int login(String userName, String passWord, int connectionID){ //TODO: Return type and action
-        if(listOfUsers.containsKey(userName)){
-            User userInSystem = listOfUsers.get(userName);
-            if(!userInSystem.isLogin()) {
-                if (userInSystem.getPassword().equals(passWord)) {
-                    userInSystem.setLogin(true);
-                    userInSystem.setUniqueId(connectionID);
-                    return 0; // 0 Represents All OK
+    public int login(String userName, String passWord, int connectionID){
+        synchronized (this) {
+            if (listOfUsers.containsKey(userName)) {
+                User userInSystem = listOfUsers.get(userName);
+                if (!userInSystem.isLogin()) {
+                    if (userInSystem.getPassword().equals(passWord)) {
+                        userInSystem.setLogin(true);
+                        userInSystem.setUniqueId(connectionID);
+                        return 0; // 0 Represents All OK
+                    } else {
+                        return 2; //2 Resresents User Who gave incorrect Pass
+                    }
+                } else {
+                    return 1; //1 Represents User Who already Logged IN
                 }
-                else {
-                    return 2; //2 Resresents User Who gave incorrect Pass
-                }
+            } else {
+                User newUser = new User(userName, passWord);
+                newUser.setUniqueId(connectionID);
+                newUser.setLogin(true);
+                listOfUsers.put(userName, newUser);
+                return 0; // 0 Represents All OK
             }
-            else
-            {
-                return 1; //1 Represents User Who already Logged IN
-            }
-        }
-        else{
-            User newUser = new User(userName,passWord);
-            newUser.setUniqueId(connectionID);
-            newUser.setLogin(true);
-            listOfUsers.put(userName,newUser);
-            return 0; // 0 Represents All OK
         }
 
     }
