@@ -121,19 +121,4 @@ public class StompBookClub {
         return registerdToGenreMap;
     }
 
-    public StompFrames addBook(String genre, String book) {
-        return null;
-    }
-
-    public StompFrames borrowBook(String genre, String book) {
-        return null;
-    }
-
-    public StompFrames status(String genre) {
-        return null;
-    }
-
-    public StompFrames returning(String genre, String book) {
-        return null;
-    }
 }

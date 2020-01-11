@@ -4,8 +4,11 @@ import bgu.spl.net.impl.CommandsAndStomps.*;
 import bgu.spl.net.impl.bookclub.StompBookClub;
 import bgu.spl.net.impl.bookclub.User;
 import bgu.spl.net.srv.Connections;
+import javafx.util.Pair;
 
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> {
     private int connectionId;
@@ -129,8 +132,11 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
             {
                 userName = remainingRowSeperator[2].substring(0, remainingRowSeperator[2].indexOf(':'));
             }
-            int subscribeID = stompBookClub.findSubscribeID(destenation, userName);
-            connections.send(destenation, new MessageFrame(subscribeID, msgID, destenation, remainingRowSeperator[2]));
+            CopyOnWriteArrayList<Pair<User,Integer>> genreArray = stompBookClub.getRegisterdToGenreMap().get(destenation);
+            if(genreArray!=null) {
+                for (Pair<User,Integer> user:genreArray)
+                    connections.send(user.getKey().getUniqueId(), new MessageFrame(user.getValue(), msgID, destenation, remainingRowSeperator[2]));
+            }
         }
     }
 
