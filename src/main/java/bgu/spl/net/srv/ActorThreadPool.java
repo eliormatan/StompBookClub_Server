@@ -45,7 +45,6 @@ public class ActorThreadPool {
         actsRWLock.readLock().lock();
         Queue<Runnable> pendingRunnables = acts.get(act);
         actsRWLock.readLock().unlock();
-
         if (pendingRunnables == null) {
             actsRWLock.writeLock().lock();
             acts.put(act, pendingRunnables = new LinkedList<>());

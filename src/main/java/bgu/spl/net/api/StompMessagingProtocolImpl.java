@@ -34,7 +34,7 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
     }
 
     @Override
-    public void process(String message) { //TODO
+    public void process(String message) {
         String result = message;
         String[] firstRowSeperator = result.split("\n", 2);
         if (firstRowSeperator[0].equals("CONNECT")) {
@@ -134,9 +134,11 @@ public class StompMessagingProtocolImpl<T> implements StompMessagingProtocol<T> 
             }
             CopyOnWriteArrayList<Pair<User,Integer>> genreArray = stompBookClub.getRegisterdToGenreMap().get(destenation);
             if(genreArray!=null) {
-                for (Pair<User,Integer> user:genreArray) {
-                    if(connections.send(user.getKey().getUniqueId(), new MessageFrame(user.getValue(), msgID, destenation, remainingRowSeperator[2])))
-                        forceDisconnect();
+                synchronized (genreArray) {
+                    for (Pair<User, Integer> user : genreArray) {
+                        if (connections.send(user.getKey().getUniqueId(), new MessageFrame(user.getValue(), msgID, destenation, remainingRowSeperator[2])))
+                            forceDisconnect();
+                    }
                 }
             }
         }

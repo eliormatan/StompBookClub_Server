@@ -60,7 +60,6 @@ public class Reactor<T> implements Server<T> {
                 selector.select();
                 runSelectionThreadTasks();
                 for (SelectionKey key : selector.selectedKeys()) {
-
                     if (!key.isValid()) {
                         continue;
                     } else if (key.isAcceptable()) {
