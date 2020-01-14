@@ -72,19 +72,6 @@ public class StompBookClub {
 
     }
     public void logout(User user){
-        Iterator<CopyOnWriteArrayList<Pair<User, Integer>>> valueIterator = registerdToGenreMap.values().iterator();
-        while(valueIterator.hasNext()){
-            CopyOnWriteArrayList<Pair<User, Integer>> next = valueIterator.next();
-            Iterator<Pair<User, Integer>> pairsIter = next.iterator();
-            Boolean found = false;
-            while(!found & pairsIter.hasNext()){
-                Pair<User, Integer> pair = pairsIter.next();
-                if(pair.getKey().equals(user)){
-                    next.remove(pair);
-                    found = true;
-                }
-            }
-        }
         user.setLogin(false);
         user.setUniqueId(-1);
 
